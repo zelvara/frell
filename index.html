@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ReelZone - FikFap Style</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background: #0a0a0a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .reel-container {
+    height: 100vh;
+    width: 100vw;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    background: #000;
+  }
+  .reel {
+    scroll-snap-align: start;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  video {
+    max-height: 90vh;
+    max-width: 100vw;
+    border-radius: 12px;
+    object-fit: contain;
+    background: black;
+  }
+  .overlay {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    text-shadow: 0 0 10px #000;
+  }
+  .username {
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
+  .controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background: rgba(255 255 255 / 0.1);
+    padding: 8px 14px;
+    border-radius: 20px;
+    user-select: none;
+    transition: background 0.3s ease;
+  }
+  .controls:hover {
+    background: rgba(255 255 255 / 0.3);
+  }
+</style>
+</head>
+<body>
+
+<div class="reel-container" id="reelContainer">
+  <div class="reel">
+    <video muted loop playsinline>
+      <source src="videos/1.mp4" type="video/mp4" />
+    </video>
+    <div class="overlay">
+      <div class="username">@user1</div>
+    </div>
+    <div class="controls" onclick="toggleMute(this)">Unmute</div>
+  </div>
+  <div class="reel">
+    <video muted loop playsinline>
+      <source src="videos/2.mp4" type="video/mp4" />
+    </video>
+    <div class="overlay">
+      <div class="username">@user2</div>
+    </div>
+    <div class="controls" onclick="toggleMute(this)">Unmute</div>
+  </div>
+  <div class="reel">
+    <video muted loop playsinline>
+      <source src="videos/3.mp4" type="video/mp4" />
+    </video>
+    <div class="overlay">
+      <div class="username">@user3</div>
+    </div>
+    <div class="controls" onclick="toggleMute(this)">Unmute</div>
+  </div>
+</div>
+
+<script>
+  const videos = document.querySelectorAll('video');
+  const options = { root: null, rootMargin: '0px', threshold: 0.7 };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.play();
+      } else {
+        entry.target.pause();
+      }
+    });
+  }, options);
+  
+  videos.forEach(video => observer.observe(video));
+
+  function toggleMute(controlBtn) {
+    const video = controlBtn.parentElement.querySelector('video');
+    if (video.muted) {
+      video.muted = false;
+      controlBtn.textContent = 'Mute';
+    } else {
+      video.muted = true;
+      controlBtn.textContent = 'Unmute';
+    }
+  }
+</script>
+
+</body>
+</html>
